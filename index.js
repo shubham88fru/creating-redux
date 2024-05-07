@@ -4,15 +4,24 @@
  * 2. They depend only on the argument passed into them.
  * 3. Never product any side effects (Should have no interaction with the outside world.)
  */
-//Reducer function.
+//Reducer function (Must be pure function)
 //Created the user of the library, thats why
 //not included in the createStore().
 function todos(state = [], action) {
-  if (action.type === "ADD_TODO") {
-    return state.concat([action.todo]); //not push!
+  switch (action.type) {
+    case "ADD_TODO":
+      return state.concat([action.todo]); //not push! concat returns a new array.
+    case "REMOVE_TODO":
+      return state.filter((todo) => todo.id !== action.id);
+    case "TOGGLE_TOOD":
+      return state.map((todo) =>
+        todo.id !== action.id
+          ? todo
+          : Object.assign({}, todo, { complete: !todo.complete })
+      );
+    default:
+      return state;
   }
-
-  return state;
 }
 
 function createStore(reducer) {
