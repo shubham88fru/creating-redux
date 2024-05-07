@@ -130,4 +130,42 @@ function app(state = {}, action) {
 }
 
 const store = createStore(app);
+store.subscribe(() => console.log(store.getState()));
+
+//DOM Code
+function generateId() {
+  return (
+    Math.random().toString(36).substring(2) + new Date().getTime().toString(36)
+  );
+}
+
+function addTodo() {
+  const input = document.getElementById("todo");
+  const name = input.value;
+  input.value = "";
+
+  store.dispatch(
+    addTodoAction({
+      id: generateId(),
+      name,
+      complete: false,
+    })
+  );
+}
+
+function addGoal() {
+  const input = document.getElementById("goal");
+  const name = input.value;
+  input.value = "";
+
+  store.dispatch(
+    addGoalAction({
+      id: generateId(),
+      name,
+    })
+  );
+}
+
+document.getElementById("todoBtn").addEventListener("click", addTodo);
+document.getElementById("goalBtn").addEventListener("click", addGoal);
 ////////////////////////APP CODE//////////////////////
