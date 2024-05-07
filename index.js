@@ -130,7 +130,34 @@ function app(state = {}, action) {
 }
 
 const store = createStore(app);
-store.subscribe(() => console.log(store.getState()));
+store.subscribe(() => {
+  const { goals, todos } = store.getState();
+  document.getElementById("goals").innerHTML = "";
+  document.getElementById("todos").innerHTML = "";
+
+  goals.forEach(addGoalToDOM);
+  todos.forEach(addTodoToDOM);
+});
+
+function addTodoToDOM(todo) {
+  const node = document.createElement("li");
+  const textNode = document.createTextNode(todo.name);
+  node.appendChild(textNode);
+
+  node.style.textDecoration = todo.complete ? "line-through" : "none";
+  node.addEventListener("click", () => {
+    store.dispatch(toggleTodoAction(todo.id));
+  });
+
+  document.getElementById("todos").appendChild(node);
+}
+
+function addGoalToDOM(goal) {
+  const node = document.createElement("li");
+  const textNode = document.createTextNode(goal.name);
+  node.appendChild(textNode);
+  document.getElementById("goals").appendChild(node);
+}
 
 //DOM Code
 function generateId() {
