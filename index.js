@@ -7,6 +7,8 @@
 //Reducer function (Must be pure function)
 //Created the user of the library, thats why
 //not included in the createStore().
+
+//Todos reducer - updates and return todo part of the state.
 function todos(state = [], action) {
   switch (action.type) {
     case "ADD_TODO":
@@ -22,6 +24,27 @@ function todos(state = [], action) {
     default:
       return state;
   }
+}
+
+//Goals reducer. Updates and returns goals part of the state.
+function goals(state = [], action) {
+  switch (action.type) {
+    case "ADD_GOAL":
+      return state.concat([action.goal]);
+    case "REMOVE_GOAL":
+      return state.filter((goal) => goal.id !== action.id);
+    default:
+      return state;
+  }
+}
+
+//Combines all state in the app.
+//The root reducer.
+function app(state = {}, action) {
+  return {
+    todos: todos(state.todos, action), //todos state
+    goals: goals(state.goals, action), //goals state
+  };
 }
 
 function createStore(reducer) {
@@ -61,4 +84,4 @@ function createStore(reducer) {
   };
 }
 
-const store = createStore(todos);
+const store = createStore(app);
