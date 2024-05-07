@@ -1,4 +1,21 @@
-function createStore() {
+/**
+ * Characteristics of a pure function -
+ * 1. They always return the same result if the same arguments are passed to them.
+ * 2. They depend only on the argument passed into them.
+ * 3. Never product any side effects (Should have no interaction with the outside world.)
+ */
+//Reducer function.
+//Created the user of the library, thats why
+//not included in the createStore().
+function todos(state = [], action) {
+  if (action.type === "ADD_TODO") {
+    return state.concat([action.todo]); //not push!
+  }
+
+  return state;
+}
+
+function createStore(reducer) {
   // The store should have four parts
   // 1. The state.
   // 2. Get teh state.
@@ -22,10 +39,17 @@ function createStore() {
     };
   };
 
+  //4. update the state.
+  const dispatch = (action) => {
+    state = reducer(state, action); //call the reducer, to update the state.
+    listeners.forEach((listener) => listener());
+  };
+
   return {
     getState,
     subscribe,
+    dispatch,
   };
 }
 
-const store = createStore();
+const store = createStore(todos);
