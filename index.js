@@ -10,7 +10,7 @@ function createStore(reducer) {
   let state;
   let listeners = [];
 
-  // 2. Get teh state.
+  // 2. Get the state.
   const getState = () => state;
 
   // 3. Listen to changes on the state.
